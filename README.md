@@ -21,7 +21,7 @@ redis-server
 ```
 python -m celery -A fullstackbackend worker -l info
 ```
-### start background job
+### start background job - for scraping jobs from stackoverflow.com
 ```
 python -m celery -A fullstackbackend beat -l info
 ```
