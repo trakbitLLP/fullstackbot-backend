@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = ')(=7tnns03=p*x!h7q*3c9o!jf%b$^4qx9%_@*oy4%mus_0&2y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['www.fullstackbot.com']
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
