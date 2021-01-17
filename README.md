@@ -4,24 +4,28 @@
 ### create database
 create database with name **fullstackjob** in **PostgreSQL**
 
-### create tables
+### Install python packages
+```
+pip install -r requirements.txt
+```
+### Create tables
 ```
 python manage.py makemigrations
 python manage.py migrate
 ```
-### start backend
+### Start backend
 ```
 python manage.py runserver
 ```
-### start redis
+### Start redis
 ```
 redis-server
 ```
-### start worker
+### Start worker
 ```
 python -m celery -A fullstackbackend worker -l info
 ```
-### start background job - for scraping jobs from stackoverflow.com
+### Start background job - for scraping jobs from stackoverflow.com
 ```
 python -m celery -A fullstackbackend beat -l info
 ```
