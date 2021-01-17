@@ -100,6 +100,6 @@ def scrap_stackoverflow_pg_2():
         ).save()
 
 
-def scrapper():
+def scraper():
     scrap_stackoverflow_pg_1()
     scrap_stackoverflow_pg_2()

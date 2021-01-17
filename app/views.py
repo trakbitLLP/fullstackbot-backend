@@ -3,7 +3,7 @@ from rest_framework.views import Response
 from app.models import Job
 from django.db import connection
 import json
-from app.scrapper import scrapper
+from app.scraper import scraper
 import os
 from celery import Celery
 
@@ -16,7 +16,7 @@ else:
 
 @app.task(name="scrapper")
 def scrap_task():
-    scrapper()
+    scraper()
 
 
 @api_view(['POST'])
