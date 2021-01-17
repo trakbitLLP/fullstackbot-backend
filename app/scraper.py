@@ -1,6 +1,14 @@
 from app.models import Job
 import requests
 from bs4 import BeautifulSoup
+import os
+from celery import Celery
+
+app = ""
+if 'DB_NAME' in os.environ:
+    app = Celery('tasks', broker='redis://redis-mw7h:10000')
+else:
+    app = Celery('tasks', broker='redis://localhost:6379')
 
 
 def scrap_stackoverflow_pg_1():
