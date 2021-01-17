@@ -9,4 +9,4 @@ beautifulsoup4==4.8.2
 APScheduler==3.6.0
 Celery==4.4.0
 gunicorn==19.9.0
-redis==2.10.6
+redis==3.2.0
