@@ -11,7 +11,7 @@ python manage.py migrate
 ```
 ### start backend
 ```
-### python manage.py runserver
+python manage.py runserver
 ```
 ### start redis
 ```
