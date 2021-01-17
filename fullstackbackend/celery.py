@@ -22,8 +22,8 @@ def debug_task(self):
 
 
 app.conf.beat_schedule = {
-    'add-every-half-day': {
+    'add-every-10-minutes': {
         'task': 'scrapper',
-        'schedule': 43200.0,
+        'schedule': 600.0,
     }
 }
