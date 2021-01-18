@@ -71,8 +71,7 @@ def filter_tag(request):
     connection.close()
     job_list = []
     for job in jobs:
-        tags = job.tags
-        for tag in tags:
+        for tag in job.tags:
             if tag in filter_tag:
                 job_list.append({
                     "companyImage": job.company_image,
