@@ -20,13 +20,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')(=7tnns03=p*x!h7q*3c9o!jf%b$^4qx9%_@*oy4%mus_0&2y'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['fullstackbot-backend.onrender.com']
 CORS_ORIGIN_ALLOW_ALL = True
+
 
 # Application definition
 
