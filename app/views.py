@@ -1,11 +1,12 @@
 from rest_framework.decorators import api_view
 from rest_framework.views import Response
-from app.models import Job
+from app.models import Job, Tag
 from django.db import connection
 import json
 from app.scraper import scraper
 import os
 from celery import Celery
+
 
 app = ""
 if 'DB_NAME' in os.environ:
@@ -50,4 +51,35 @@ def get_job(request):
           "jobLocation": job.job_location,
           "tags": job.tags
         })
+    return Response({"jobs": job_list})
+
+
+@api_view()
+def get_tag(request):
+    tags = Tag.objects.all()
+    connection.close()
+    tag_list = []
+    for tag in tags:
+        tag_list.append(tag.tag)
+    return Response({"tags": tag_list})
+
+
+@api_view(['POST'])
+def filter_tag(request):
+    filter_tag = (request.body).decode("utf-8")
+    jobs = Job.objects.all()
+    connection.close()
+    job_list = []
+    for job in jobs:
+        tags = job.tags
+        for tag in tags:
+            if tag in filter_tag:
+                job_list.append({
+                    "companyImage": job.company_image,
+                    "companyName": job.company_name,
+                    "jobTitle": job.job_title,
+                    "jobLink": job.job_link,
+                    "jobLocation": job.job_location,
+                    "tags": job.tags
+                })
     return Response({"jobs": job_list})

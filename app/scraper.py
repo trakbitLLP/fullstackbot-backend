@@ -1,4 +1,4 @@
-from app.models import Job
+from app.models import Job, Tag
 import requests
 from bs4 import BeautifulSoup
 
@@ -40,6 +40,10 @@ def scrap_stackoverflow_pg_1():
 
         tags_element = job_element.find_all('a', class_='post-tag no-tag-menu')
         for tag in tags_element:
+            try:
+                Tag.objects.get(tag=tag.text)
+            except Tag.DoesNotExist:
+                Tag(tag=tag.text).save()
             tags.append(tag.text)
 
         Job(
@@ -88,6 +92,10 @@ def scrap_stackoverflow_pg_2():
 
         tags_element = job_element.find_all('a', class_='post-tag no-tag-menu')
         for tag in tags_element:
+            try:
+                Tag.objects.get(tag=tag.text)
+            except Tag.DoesNotExist:
+                Tag(tag=tag.text).save()
             tags.append(tag.text)
 
         Job(

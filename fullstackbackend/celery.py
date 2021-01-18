@@ -24,6 +24,6 @@ def debug_task(self):
 app.conf.beat_schedule = {
     'add-every-10-minutes': {
         'task': 'scrapper',
-        'schedule': 600.0,
+        'schedule': 120.0,
     }
 }

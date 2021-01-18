@@ -15,3 +15,7 @@ class Job(models.Model):
     tags = ArrayField(
             models.CharField(max_length=400, blank=True),
             size=8)
+
+
+class Tag(models.Model):
+    tag = models.CharField(max_length=400)
