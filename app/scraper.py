@@ -1,11 +1,13 @@
 from app.models import Job, Tag
 import requests
 from bs4 import BeautifulSoup
+from django.db import connection
 
 
 def scrap_stackoverflow_pg_1():
     Job.objects.all().delete()
     Tag.objects.all().delete()
+    connection.close()
     URL = 'https://stackoverflow.com/jobs/full-stack-developer-jobs/'
     page = requests.get(URL)
 
@@ -46,6 +48,7 @@ def scrap_stackoverflow_pg_1():
             except Tag.DoesNotExist:
                 Tag(tag=tag.text).save()
             tags.append(tag.text)
+        connection.close()
 
         Job(
           company_image=company_images[i-2],
@@ -98,6 +101,7 @@ def scrap_stackoverflow_pg_2():
             except Tag.DoesNotExist:
                 Tag(tag=tag.text).save()
             tags.append(tag.text)
+        connection.close()
 
         Job(
           company_image=company_images[j-1],
