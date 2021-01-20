@@ -72,7 +72,7 @@ def filter_tag(request):
     job_list = []
     for job in jobs:
         for tag in job.tags:
-            if tag in filter_tag:
+            if tag == filter_tag:
                 job_list.append({
                     "companyImage": job.company_image,
                     "companyName": job.company_name,

@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 
 def scrap_stackoverflow_pg_1():
     Job.objects.all().delete()
+    Tag.objects.all().delete()
     URL = 'https://stackoverflow.com/jobs/full-stack-developer-jobs/'
     page = requests.get(URL)
 
