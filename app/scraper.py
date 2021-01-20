@@ -47,7 +47,7 @@ def scrap_stackoverflow_pg_1():
             tags.append(tag.text)
 
         Job(
-          company_image=company_images[i-1],
+          company_image=company_images[i-2],
           company_name=company_name,
           job_title=job_title,
           job_location=job_location,
