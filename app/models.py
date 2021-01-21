@@ -9,6 +9,7 @@ class Job(models.Model):
     job_title = models.CharField(max_length=400)
     job_location = models.CharField(max_length=400)
     job_link = models.CharField(max_length=400)
+    job_content = models.TextField(default="")
     job_post = models.CharField(
         max_length=400,
         default=str(datetime.today().strftime('%Y-%m-%d')))

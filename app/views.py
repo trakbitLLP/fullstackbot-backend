@@ -49,6 +49,7 @@ def get_job(request):
           "jobTitle": job.job_title,
           "jobLink": job.job_link,
           "jobLocation": job.job_location,
+          "jobContent": job.job_content,
           "tags": job.tags
         })
     return Response({"jobs": job_list})

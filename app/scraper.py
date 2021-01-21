@@ -35,12 +35,14 @@ def scrap_stackoverflow_pg_1():
         else:
             tags = []
             job_title = job_element.find('a', class_='s-link stretched-link').text
-
             job_title_anchor = (job_element.find('a', class_='s-link stretched-link'))
             job_link = 'https://stackoverflow.com'+job_title_anchor['href']
 
-            company_and_location = job_element.find('h3', class_='fc-black-700 fs-body1 mb4').text
+            job_page = requests.get(job_link)
+            job_soup = BeautifulSoup(job_page.content, 'html.parser')
+            job_content = str(job_soup.find(class_='mb32 fs-body2 fc-medium pr48'))
 
+            company_and_location = job_element.find('h3', class_='fc-black-700 fs-body1 mb4').text
             company_name = (company_and_location.split('•')[0]).strip()
             job_location = (company_and_location.split('•')[1]).strip()
 
@@ -56,8 +58,9 @@ def scrap_stackoverflow_pg_1():
             connection.close()
 
             Job(
-                company_image=company_images[i-1],
+                company_image=company_images[i],
                 company_name=company_name,
+                job_content=job_content,
                 job_title=job_title,
                 job_location=job_location,
                 job_link=job_link,
@@ -93,12 +96,14 @@ def scrap_stackoverflow_pg_2():
         else:
             tags = []
             job_title = job_element.find('a', class_='s-link stretched-link').text
-
             job_title_anchor = (job_element.find('a', class_='s-link stretched-link'))
             job_link = 'https://stackoverflow.com'+job_title_anchor['href']
 
-            company_and_location = job_element.find('h3', class_='fc-black-700 fs-body1 mb4').text
+            job_page = requests.get(job_link)
+            job_soup = BeautifulSoup(job_page.content, 'html.parser')
+            job_content = str(job_soup.find(class_='mb32 fs-body2 fc-medium pr48'))
 
+            company_and_location = job_element.find('h3', class_='fc-black-700 fs-body1 mb4').text
             company_name = (company_and_location.split('•')[0]).strip()
             job_location = (company_and_location.split('•')[1]).strip()
 
@@ -115,8 +120,9 @@ def scrap_stackoverflow_pg_2():
             connection.close()
 
             Job(
-                company_image=company_images[j-1],
+                company_image=company_images[j],
                 company_name=company_name,
+                job_content=job_content,
                 job_title=job_title,
                 job_location=job_location,
                 job_link=job_link,
