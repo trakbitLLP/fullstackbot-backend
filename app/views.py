@@ -60,7 +60,10 @@ def get_tag(request):
     connection.close()
     tag_list = []
     for tag in tags:
-        tag_list.append(tag.tag)
+        tag_list.append({
+            "tag": tag.tag,
+            "count": tag.count
+        })
     return Response({"tags": tag_list})
 
 

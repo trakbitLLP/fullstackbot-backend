@@ -19,3 +19,4 @@ class Job(models.Model):
 
 class Tag(models.Model):
     tag = models.CharField(max_length=400)
+    count = models.IntegerField(default=1)
