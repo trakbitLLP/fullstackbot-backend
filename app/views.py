@@ -22,7 +22,7 @@ def scrap_task():
 
 @api_view(['POST'])
 def post_job(request):
-    Job.objects.all().delete()
+    # Job.objects.all().delete()
     request_data = json.loads(json.dumps(request.data))
     for company in request_data:
         Job(
@@ -83,6 +83,7 @@ def filter_tag(request):
                     "jobTitle": job.job_title,
                     "jobLink": job.job_link,
                     "jobLocation": job.job_location,
+                    "jobContent": job.job_content,
                     "tags": job.tags
                 })
     return Response({"jobs": job_list})
