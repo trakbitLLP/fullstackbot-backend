@@ -6,7 +6,8 @@ import json
 from app.scraper import scraper
 import os
 from celery import Celery
-
+from django_expiring_token.models import ExpiringToken
+from django.contrib.auth.models import User
 
 app = ""
 if 'DB_NAME' in os.environ:
@@ -20,39 +21,37 @@ def scrap_task():
     scraper()
 
 
-@api_view(['POST'])
-def post_job(request):
-    # Job.objects.all().delete()
-    request_data = json.loads(json.dumps(request.data))
-    for company in request_data:
-        Job(
-            company_image=company.get('companyImage'),
-            company_name=company.get('companyName'),
-            job_title=company.get('jobTitle'),
-            job_location=company.get('jobLocation'),
-            job_link=company.get('jobLink'),
-            tags=company.get('tags'),
-        ).save()
-    connection.close()
-    return Response({"hello": "world"})
-
-
-@api_view()
-def get_job(request):
-    jobs = Job.objects.all()
-    connection.close()
-    job_list = []
-    for job in jobs:
-        job_list.append({
-          "companyImage": job.company_image,
-          "companyName": job.company_name,
-          "jobTitle": job.job_title,
-          "jobLink": job.job_link,
-          "jobLocation": job.job_location,
-          "jobContent": job.job_content,
-          "tags": job.tags
-        })
-    return Response({"jobs": job_list})
+@api_view(['GET', 'PUT'])
+def job(request):
+    if request.method == 'GET':
+        jobs = Job.objects.all()
+        connection.close()
+        job_list = []
+        for job in jobs:
+            job_list.append({
+                "jobId": job.pk,
+                "companyImage": job.company_image,
+                "companyName": job.company_name,
+                "jobTitle": job.job_title,
+                "jobLink": job.job_link,
+                "jobLocation": job.job_location,
+                "jobContent": job.job_content,
+                "tags": job.tags
+            })
+        return Response({"jobs": job_list})
+    if request.method == 'PUT':
+        try:
+            request_data = json.loads(json.dumps(request.data))
+            job = Job.objects.get(pk=request_data.get('jobId'))
+            job.company_name = request_data.get('companyName')
+            job.job_title = request_data.get('jobTitle')
+            job.job_location = request_data.get('jobLocation')
+            job.job_link = request_data.get('jobLink')
+            job.tags = request_data.get('tags')
+            job.save()
+            return Response({"saved": 1})
+        except Job.DoesNotExist:
+            return Response({"saved": 0})
 
 
 @api_view()
@@ -87,3 +86,23 @@ def filter_tag(request):
                     "tags": job.tags
                 })
     return Response({"jobs": job_list})
+
+
+@api_view(['POST'])
+def admin_login(request):
+    request_data = json.loads(json.dumps(request.data))
+    email = request_data.get('email')
+    password = request_data.get('password')
+    token = 0
+    loggedIn = 0
+    try:
+        user = User.objects.get(is_superuser=True, email=email)
+        if user.check_password(password) is True:
+            token, _ = ExpiringToken.objects.get_or_create(user=user)
+            loggedIn = 1
+    except User.DoesNotExist:
+        print('User.DoesNotExist')
+    return Response({
+        "loggedIn": loggedIn,
+        "token": token.key
+    })
