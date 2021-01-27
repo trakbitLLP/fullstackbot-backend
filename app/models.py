@@ -16,6 +16,7 @@ class Job(models.Model):
     tags = ArrayField(
             models.CharField(max_length=400, blank=True),
             size=8)
+    automated = models.BooleanField(default=True)
 
 
 class Tag(models.Model):

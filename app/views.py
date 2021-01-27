@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import Response
 from app.models import Job, Tag
 from django.db import connection
@@ -8,6 +8,8 @@ import os
 from celery import Celery
 from django_expiring_token.models import ExpiringToken
 from django.contrib.auth.models import User
+from rest_framework.permissions import IsAuthenticated
+
 
 app = ""
 if 'DB_NAME' in os.environ:
@@ -21,37 +23,61 @@ def scrap_task():
     scraper()
 
 
-@api_view(['GET', 'PUT'])
-def job(request):
-    if request.method == 'GET':
-        jobs = Job.objects.all()
-        connection.close()
-        job_list = []
-        for job in jobs:
-            job_list.append({
-                "jobId": job.pk,
-                "companyImage": job.company_image,
-                "companyName": job.company_name,
-                "jobTitle": job.job_title,
-                "jobLink": job.job_link,
-                "jobLocation": job.job_location,
-                "jobContent": job.job_content,
-                "tags": job.tags
-            })
-        return Response({"jobs": job_list})
-    if request.method == 'PUT':
-        try:
-            request_data = json.loads(json.dumps(request.data))
-            job = Job.objects.get(pk=request_data.get('jobId'))
-            job.company_name = request_data.get('companyName')
-            job.job_title = request_data.get('jobTitle')
-            job.job_location = request_data.get('jobLocation')
-            job.job_link = request_data.get('jobLink')
-            job.tags = request_data.get('tags')
-            job.save()
-            return Response({"saved": 1})
-        except Job.DoesNotExist:
-            return Response({"saved": 0})
+@api_view(['GET'])
+def get_job(request):
+    jobs = Job.objects.all()
+    connection.close()
+    job_list = []
+    for job in jobs:
+        job_list.append({
+            "jobId": job.pk,
+            "companyImage": job.company_image,
+            "companyName": job.company_name,
+            "jobTitle": job.job_title,
+            "jobLink": job.job_link,
+            "jobLocation": job.job_location,
+            "jobContent": job.job_content,
+            "tags": job.tags
+        })
+    return Response({"jobs": job_list})
+
+
+@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def add_job(request):
+    try:
+        request_data = json.loads(json.dumps(request.data))
+        tags = request_data.get('tags').split(",")
+        Job(
+            company_image=request_data.get('companyImage'),
+            company_name=request_data.get('companyName'),
+            job_title=request_data.get('jobTitle'),
+            job_location=request_data.get('jobLocation'),
+            job_link=request_data.get('jobLink'),
+            job_content=request_data.get('jobContent'),
+            tags=tags,
+            automated=False
+        ).save()
+        return Response({"saved": 1})
+    except:
+        return Response({"saved": 0})
+
+
+@permission_classes([IsAuthenticated])
+@api_view(['PUT'])
+def edit_job(request):
+    try:
+        request_data = json.loads(json.dumps(request.data))
+        job = Job.objects.get(pk=request_data.get('jobId'))
+        job.company_name = request_data.get('companyName')
+        job.job_title = request_data.get('jobTitle')
+        job.job_location = request_data.get('jobLocation')
+        job.job_link = request_data.get('jobLink')
+        job.tags = request_data.get('tags')
+        job.save()
+        return Response({"saved": 1})
+    except Job.DoesNotExist:
+        return Response({"saved": 0})
 
 
 @api_view()

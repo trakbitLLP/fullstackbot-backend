@@ -5,7 +5,7 @@ from django.db import connection
 
 
 def scrap_stackoverflow_pg_1():
-    Job.objects.all().delete()
+    Job.objects.all().filter(automated=True).delete()
     Tag.objects.all().delete()
     connection.close()
     URL = 'https://stackoverflow.com/jobs?dr=FullStackDeveloper'
