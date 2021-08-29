@@ -2,7 +2,7 @@ Django==2.2.13
 djangorestframework==3.9.2
 Pillow==7.1.0
 postgres==2.2.2
-psycopg2-binary==2.7.7
+psycopg2-binary==2.8.6
 django-cors-headers==2.5.0
 requests==2.23.0
 beautifulsoup4==4.8.2
