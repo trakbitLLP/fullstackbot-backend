@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+djangorestframework = "==3.9.2"
+postgres = "==2.2.2"
+psycopg2-binary = "==2.7.7"
+django-cors-headers = "==2.5.0"
+requests = "==2.23.0"
+beautifulsoup4 = "==4.8.2"
+apscheduler = "==3.6.0"
+celery = "==4.4.0"
+gunicorn = "==19.9.0"
+redis = "==3.2.0"
+django-expiring-token = "==1.0.2"
+django-environ = "==0.4.5"
+Django = "==2.2.13"
+Pillow = "==7.1.0"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
