@@ -155,8 +155,8 @@ STATIC_URL = '/static/'
 
 if 'DB_NAME' in os.environ:
     # Celery base setup
-    CELERY_BROKER_URL = 'redis://redis-mw7h:10000'
-    CELERY_RESULT_BACKEND = 'redis://redis-mw7h:10000'
+    CELERY_BROKER_URL = 'redis://localhost:6379'
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379'
     CELERY_ACCEPT_CONTENT = ['application/json']
     CELERY_TASK_SERIALIZER = 'json'
     CELERY_RESULT_SERIALIZER = 'json'
